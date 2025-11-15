@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - DeepSync</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  
+  
+  </head>
+<body class="bg-background min-h-screen">
+    <!-- Navigation Header -->
+    <nav class="bg-surface border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 text-primary mr-3" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12C8 8.68629 10.6863 6 14 6H18C21.3137 6 24 8.68629 24 12V20C24 23.3137 21.3137 26 18 26H14C10.6863 26 8 23.3137 8 20V12Z" fill="currentColor" opacity="0.2"/>
+                        <path d="M16 8C12.6863 8 10 10.6863 10 14V18C10 21.3137 12.6863 24 16 24C19.3137 24 22 21.3137 22 18V14C22 10.6863 19.3137 8 16 8Z" fill="currentColor"/>
+                        <path d="M14 12H18M14 16H18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span class="text-xl font-bold text-text-primary">DeepSync</span>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="dashboard.html" class="text-primary font-medium border-b-2 border-primary pb-1">Dashboard</a>
+                    <a href="analytics.html" class="text-text-secondary hover:text-primary transition-colors">Analytics</a>
+                    <a href="focus_sessions.html" class="text-text-secondary hover:text-primary transition-colors">Focus</a>
+                    <a href="schedule.html" class="text-text-secondary hover:text-primary transition-colors">Schedule</a>
+                    <a href="settings.html" class="text-text-secondary hover:text-primary transition-colors">Settings</a>
+                </div>
+
+                <!-- User Profile -->
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-text-secondary hover:text-primary transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-12"></path>
+                        </svg>
+                    </button>
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">JS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-text-primary mb-2">Good morning, <span data-user-name>Guest</span>!</h1>
+            <p class="text-text-secondary">Here's your digital wellness overview for today</p>
+        </div>
+
+        <!-- Quick Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Screen Time Today -->
+            <div class="card bg-gradient-to-br from-primary-50 to-primary-100 border-primary-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Screen Time Today</p>
+                        <p class="text-2xl font-bold text-primary mt-1" id="screenTime">--</p>
+                        <p class="text-secondary text-sm mt-1" id="screenTimeChange"></p>
+                    </div>
+                    <div class="w-12 h-12 bg-primary-200 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Focus Sessions -->
+            <div class="card bg-gradient-to-br from-secondary-50 to-secondary-100 border-secondary-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Focus Sessions</p>
+                        <p class="text-2xl font-bold text-secondary mt-1" id="focusSessions">--</p>
+                        <p class="text-accent text-sm mt-1" id="sessionRemaining"></p>
+                    </div>
+                    <div class="w-12 h-12 bg-secondary-200 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Productivity Score -->
+            <div class="card bg-gradient-to-br from-accent-50 to-accent-100 border-accent-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Productivity Score</p>
+                        <p class="text-2xl font-bold text-accent mt-1" id="productivityScore">--</p>
+                        <p class="text-secondary text-sm mt-1" id="productivityChange"></p>
+                    </div>
+                    <div class="w-12 h-12 bg-accent-200 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Goal -->
+            <div class="card bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Weekly Goal</p>
+                        <p class="text-2xl font-bold text-orange-600 mt-1" id="weeklyGoal">--</p>
+                        <p class="text-text-secondary text-sm mt-1" id="timeRemaining"></p>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-200 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Today's Usage Breakdown -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-text-primary">Today's Usage Breakdown</h2>
+                        <button class="text-primary hover:text-primary-700 text-sm font-medium">View Details</button>
+                    </div>
+                    
+                    <!-- Usage Chart -->
+                    <div class="relative h-80 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg mb-6 p-4">
+                        <canvas id="categoryChartCanvas"></canvas>
+                    </div>
+
+                    <!-- Website Breakdown List -->
+                    <div class="border-t border-gray-200 pt-6">
+                        <h3 class="text-sm font-semibold text-text-primary mb-4">Website Breakdown</h3>
+                        <div id="usageBreakdown" class="space-y-3">
+                            <div class="text-center text-text-secondary py-4">
+                                <p class="text-sm">No usage data available yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Focus Sessions -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-text-primary">Recent Focus Sessions</h2>
+                        <a href="focus_sessions.html" class="text-primary hover:text-primary-700 text-sm font-medium">View All</a>
+                    </div>
+                    
+                    <div id="focusSessionsContainer" class="text-center text-text-secondary py-4">
+                        <p class="text-sm">No focus sessions yet. Start one to get started!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="space-y-8">
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h2 class="text-xl font-semibold text-text-primary mb-6">Quick Actions</h2>
+                    <div class="space-y-3">
+                        <a href="focus_sessions.html" class="btn-primary w-full text-center block">
+                            Start Focus Session
+                        </a>
+                        <a href="schedule.html" class="btn-secondary w-full text-center block">
+                            View Schedule
+                        </a>
+                        <button class="w-full px-4 py-3 border border-gray-200 rounded-lg text-text-primary hover:bg-gray-50 transition-colors">
+                            Enable Focus Lock
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Today's Schedule Preview -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-text-primary">Today's Schedule</h2>
+                        <a href="schedule.html" class="text-primary hover:text-primary-700 text-sm font-medium">View Full</a>
+                    </div>
+                    
+                    <div id="schedulePreviewContainer" class="text-center text-text-secondary py-4">
+                        <p class="text-sm">No scheduled items for today</p>
+                    </div>
+                </div>
+
+                <!-- Weekly Progress -->
+                <div class="card">
+                    <h2 class="text-xl font-semibold text-text-primary mb-6">Weekly Progress</h2>
+                    
+                    <!-- Progress Bars -->
+                    <div id="weeklyProgressContainer" class="text-center text-text-secondary py-4">
+                        <p class="text-sm">Weekly progress data will appear here</p>
+                    </div>
+                </div>
+
+                <!-- AI Insights -->
+                <div class="card bg-gradient-to-br from-accent-50 to-accent-100 border-accent-200">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-text-primary">AI Insight</h3>
+                    </div>
+                    <p class="text-sm text-text-secondary mb-4">
+                        Your productivity peaks between 10-11 AM. Consider scheduling your most important tasks during this window.
+                    </p>
+                    <button class="text-accent hover:text-accent-700 text-sm font-medium">
+                        Optimize My Schedule →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-gray-200 px-4 py-2">
+        <div class="flex justify-around">
+            <a href="dashboard.html" class="flex flex-col items-center py-2 text-primary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                </svg>
+                <span class="text-xs mt-1">Dashboard</span>
+            </a>
+            <a href="analytics.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span class="text-xs mt-1">Analytics</span>
+            </a>
+            <a href="focus_sessions.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                <span class="text-xs mt-1">Focus</span>
+            </a>
+            <a href="schedule.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="text-xs mt-1">Schedule</span>
+            </a>
+            <a href="settings.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span class="text-xs mt-1">Settings</span>
+            </a>
+        </div>
+    </nav>
+
+<script>
+    // Website category definitions
+    const CATEGORIES = {
+        'Social Media': ['twitter.com', 'facebook.com', 'instagram.com', 'tiktok.com', 'reddit.com', 'pinterest.com', 'snapchat.com', 'linkedin.com'],
+        'Video Streaming': ['youtube.com', 'netflix.com', 'twitch.tv', 'vimeo.com'],
+        'Education': ['udemy.com', 'coursera.org', 'edx.org', 'khan.org', 'codecademy.com'],
+        'Development': ['github.com', 'stackoverflow.com', 'dev.to', 'medium.com'],
+        'Work': ['google.com', 'gmail.com', 'outlook.com', 'slack.com', 'zoom.us'],
+        'Entertainment': ['reddit.com', 'imgur.com', 'giphy.com'],
+        'Shopping': ['amazon.com', 'ebay.com', 'etsy.com'],
+        'Other': []
+    };
+
+    const CATEGORY_COLORS = {
+        'Social Media': '#EC4899',
+        'Video Streaming': '#F97316',
+        'Education': '#3B82F6',
+        'Development': '#10B981',
+        'Work': '#8B5CF6',
+        'Entertainment': '#F59E0B',
+        'Shopping': '#EF4444',
+        'Other': '#6B7280'
+    };
+
+    function getCategoryForSite(site) {
+        for (const [category, sites] of Object.entries(CATEGORIES)) {
+            if (sites.some(s => site.toLowerCase().includes(s))) {
+                return category;
+            }
+        }
+        return 'Other';
+    }
+
+    function categorizeWebsites(websiteBreakdown) {
+        const categoryData = {};
+        
+        Object.entries(websiteBreakdown).forEach(([site, timeMs]) => {
+            // Convert milliseconds to minutes
+            const mins = Math.round(timeMs / 60000);
+            const category = getCategoryForSite(site);
+            categoryData[category] = (categoryData[category] || 0) + mins;
+        });
+        
+        return categoryData;
+    }
+
+    let categoryChart = null;
+
+    function updateCategoryChart(websiteBreakdown) {
+        if (!websiteBreakdown || Object.keys(websiteBreakdown).length === 0) {
+            console.log('No website data for chart');
+            return;
+        }
+
+        const ctx = document.getElementById('categoryChartCanvas');
+        if (!ctx) {
+            console.log('Canvas element not found');
+            return;
+        }
+
+        const categoryData = categorizeWebsites(websiteBreakdown);
+        const labels = Object.keys(categoryData).filter(cat => categoryData[cat] > 0);
+        const data = labels.map(cat => Math.round(categoryData[cat]));
+        const colors = labels.map(cat => CATEGORY_COLORS[cat] || '#6B7280');
+
+        console.log('Creating chart with categories:', labels, 'data:', data);
+
+        if (categoryChart) {
+            categoryChart.destroy();
+        }
+
+        categoryChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: colors,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { 
+                            font: { size: 12 },
+                            padding: 15,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const hours = Math.floor(value / 60);
+                                const mins = value % 60;
+                                const timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+                                return `${label}: ${timeStr}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update website breakdown list below chart
+        updateWebsiteList(websiteBreakdown);
+    }
+
+    function updateWebsiteList(websiteBreakdown) {
+        const container = document.getElementById('usageBreakdown');
+        if (!container) return;
+
+        if (!websiteBreakdown || Object.keys(websiteBreakdown).length === 0) {
+            container.innerHTML = '<div class="text-center text-text-secondary py-4"><p class="text-sm">No data available yet</p></div>';
+            return;
+        }
+
+        // Convert all to minutes first
+        const dataInMinutes = {};
+        Object.entries(websiteBreakdown).forEach(([site, timeMs]) => {
+            dataInMinutes[site] = Math.round(timeMs / 60000);
+        });
+
+        const totalTime = Object.values(dataInMinutes).reduce((a, b) => a + b, 0);
+        const entries = Object.entries(dataInMinutes)
+            .sort((a, b) => b[1] - a[1])
+            .filter(([site, mins]) => mins > 0);  // Only show websites with time > 0
+        
+        if (entries.length === 0) {
+            container.innerHTML = '<div class="text-center text-text-secondary py-4"><p class="text-sm">No usage data yet</p></div>';
+            return;
+        }
+
+        const html = entries
+            .map(([site, mins]) => {
+                const percentage = Math.round((mins / totalTime) * 100);
+                // Use category color for each website
+                const category = getCategoryForSite(site);
+                const color = CATEGORY_COLORS[category] || '#6B7280';
+                const hours = Math.floor(mins / 60);
+                const m = mins % 60;
+                const timeStr = hours > 0 ? `${hours}h ${m}m` : `${m}m`;
+                
+                return `
+                    <div class="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:border-primary-200 transition-colors">
+                        <div class="flex items-center space-x-3 flex-1 min-w-0">
+                            <div class="w-3 h-3 rounded-full flex-shrink-0" style="background-color: ${color};"></div>
+                            <span class="text-sm font-medium text-text-primary truncate">${site}</span>
+                        </div>
+                        <div class="text-right ml-4 flex-shrink-0">
+                            <p class="text-sm font-semibold text-text-primary">${timeStr}</p>
+                            <p class="text-xs text-text-secondary">${percentage}%</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        
+        container.innerHTML = html;
+    }
+
+    // Make function available globally for tracker.js
+    window.updateCategoryChart = updateCategoryChart;
+
+    // Wait for tracker to initialize, then render chart
+    function tryInitChart() {
+        if (window.DetoxTracker && window.DetoxTracker.getWebsiteData) {
+            const websites = {};
+            window.DetoxTracker.getWebsiteData().forEach(item => {
+                websites[item.website] = item.minutes * 60000;  // Convert back to ms
+            });
+            if (Object.keys(websites).length > 0) {
+                console.log('[dashboard] Initial render with tracker data');
+                updateCategoryChart(websites);
+            }
+        } else {
+            console.log('[dashboard] Waiting for tracker...');
+            setTimeout(tryInitChart, 500);
+        }
+    }
+    
+    // Try to render after 1 second
+    setTimeout(tryInitChart, 1000);
+</script>
+
+<script type="module" src="../js/firebase-config.js"></script>
+<script type="module" src="../js/tracker.js"></script>
+<script type="module" src="../js/listeners.js"></script>
+<script type="module" src="../js/app-init.js"></script>
+
+<script>
+// Listen for tracker updates and update UI in real-time
+window.addEventListener('usageUpdated', (event) => {
+  const data = event.detail;
+  console.log('[dashboard] Received usageUpdated event:', data);
+  
+  // Update screen time
+  if (data.totalScreenTime !== undefined) {
+    const mins = data.totalScreenTime;
+    const hours = Math.floor(mins / 60);
+    const m = mins % 60;
+    const timeStr = hours > 0 ? `${hours}h ${m}m` : `${m}m`;
+    const screenTimeEl = document.getElementById('screenTime');
+    if (screenTimeEl) {
+      screenTimeEl.textContent = timeStr;
+    }
+  }
+  
+  // Update website breakdown
+  if (data.websiteTimeBreakdown) {
+    const container = document.getElementById('usageBreakdown');
+    if (container) {
+      const breakdown = Object.entries(data.websiteTimeBreakdown);
+      if (breakdown.length > 0) {
+        container.innerHTML = breakdown
+          .map(([site, mins]) => {
+            const hours = Math.floor(mins / 60);
+            const m = mins % 60;
+            const timeStr = hours > 0 ? `${hours}h ${m}m` : `${m}m`;
+            return `<div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <span class="font-medium text-text-primary">${site}</span>
+              <span class="text-secondary font-semibold">${timeStr}</span>
+            </div>`;
+          })
+          .join('');
+      }
+    }
+  }
+  
+  // Update focus sessions (naive: 25 mins = 1 session)
+  if (data.totalScreenTime !== undefined) {
+    const sessions = Math.round(data.totalScreenTime / 25);
+    const focusEl = document.getElementById('focusSessions');
+    if (focusEl) {
+      focusEl.textContent = `${sessions}`;
+    }
+  }
+  
+  // Update category chart if available
+  if (data.websiteTimeBreakdown && window.updateCategoryChart) {
+    // Convert minutes back to milliseconds for chart
+    const websiteMs = Object.fromEntries(
+      Object.entries(data.websiteTimeBreakdown).map(([site, mins]) => [
+        site,
+        mins * 60000
+      ])
+    );
+    window.updateCategoryChart(websiteMs);
+  }
+});
+
+// Update on page load if tracker already has data
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('[dashboard] DOM loaded, checking for existing tracker data');
+  if (window.DetoxTracker && window.DetoxTracker.getCurrentData) {
+    const data = window.DetoxTracker.getCurrentData();
+    if (data.totalScreenTime > 0 || Object.keys(data.websiteTimeBreakdown || {}).length > 0) {
+      console.log('[dashboard] Found existing tracker data, dispatching event');
+      window.dispatchEvent(new CustomEvent('usageUpdated', { detail: data }));
+    }
+  }
+});
+</script>

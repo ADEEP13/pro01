@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - DeepSync</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  
+  </head>
+<body class="bg-background min-h-screen">
+    <!-- Navigation Header -->
+    <nav class="bg-surface border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <svg class="w-8 h-8 text-primary mr-3" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 12C8 8.68629 10.6863 6 14 6H18C21.3137 6 24 8.68629 24 12V20C24 23.3137 21.3137 26 18 26H14C10.6863 26 8 23.3137 8 20V12Z" fill="currentColor" opacity="0.2"/>
+                        <path d="M16 8C12.6863 8 10 10.6863 10 14V18C10 21.3137 12.6863 24 16 24C19.3137 24 22 21.3137 22 18V14C22 10.6863 19.3137 8 16 8Z" fill="currentColor"/>
+                        <path d="M14 12H18M14 16H18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    <span class="text-xl font-bold text-text-primary">DeepSync</span>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="dashboard.html" class="text-text-secondary hover:text-primary transition-colors">Dashboard</a>
+                    <a href="analytics.html" class="text-primary font-medium border-b-2 border-primary pb-1">Analytics</a>
+                    <a href="focus_sessions.html" class="text-text-secondary hover:text-primary transition-colors">Focus</a>
+                    <a href="schedule.html" class="text-text-secondary hover:text-primary transition-colors">Schedule</a>
+                    <a href="settings.html" class="text-text-secondary hover:text-primary transition-colors">Settings</a>
+                </div>
+
+                <!-- User Profile -->
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-text-secondary hover:text-primary transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </button>
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">JS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header Section -->
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-text-primary mb-2">Usage Analytics</h1>
+                <p class="text-text-secondary">Deep insights into your digital habits and productivity patterns</p>
+            </div>
+            
+            <!-- Time Period Selector -->
+            <div class="flex items-center space-x-2 mt-4 lg:mt-0">
+                <button class="px-4 py-2 text-sm font-medium text-primary bg-primary-50 border border-primary-200 rounded-lg">Daily</button>
+                <button class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-primary hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors">Weekly</button>
+                <button class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-primary hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors">Monthly</button>
+                <button class="px-4 py-2 text-sm font-medium text-text-secondary hover:text-primary hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors">Yearly</button>
+                <button class="ml-4 p-2 text-text-secondary hover:text-primary transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Key Metrics Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Screen Time -->
+            <div class="card bg-gradient-to-br from-primary-50 to-primary-100 border-primary-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Total Screen Time</p>
+                        <p class="text-2xl font-bold text-primary mt-1" id="analyticsTotalTime">--</p>
+                        <p class="text-secondary text-sm mt-1" id="analyticsTimeChange"></p>
+                    </div>
+                    <div class="w-12 h-12 bg-primary-200 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Number of Websites -->
+            <div class="card bg-gradient-to-br from-secondary-50 to-secondary-100 border-secondary-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Websites Visited</p>
+                        <p class="text-2xl font-bold text-secondary mt-1" id="numberOfWebsites">--</p>
+                        <p class="text-accent text-sm mt-1" id="websitesChange"></p>
+                    </div>
+                    <div class="w-12 h-12 bg-secondary-200 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.658 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Productivity Score -->
+            <div class="card bg-gradient-to-br from-accent-50 to-accent-100 border-accent-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Productivity Score</p>
+                        <p class="text-2xl font-bold text-accent mt-1" id="analyticsProductivity">--</p>
+                        <p class="text-secondary text-sm mt-1" id="analyticsProductivityChange"></p>
+                    </div>
+                    <div class="w-12 h-12 bg-accent-200 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Website -->
+            <div class="card bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Top Website</p>
+                        <p class="text-2xl font-bold text-orange-600 mt-1" id="topWebsite">--</p>
+                        <p class="text-text-secondary text-sm mt-1" id="topWebsiteTime"></p>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-200 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Analytics Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column - Charts -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Usage Trend Chart -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-text-primary">Usage Trends</h2>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-3 py-1 text-xs font-medium text-primary bg-primary-50 rounded-full" onclick="updateChartView('screenTime')">Screen Time</button>
+                            <button class="px-3 py-1 text-xs font-medium text-text-secondary hover:text-primary hover:bg-gray-50 rounded-full transition-colors" onclick="updateChartView('websites')">Websites</button>
+                            <button class="px-3 py-1 text-xs font-medium text-text-secondary hover:text-primary hover:bg-gray-50 rounded-full transition-colors" onclick="updateChartView('productivity')">Productivity</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart Container -->
+                    <div class="relative h-80 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4">
+                        <canvas id="usageTrendChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-text-primary">Website Breakdown</h2>
+                        <button class="text-primary hover:text-primary-700 text-sm font-medium">View Details</button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Website Chart -->
+                        <div class="flex items-center justify-center">
+                            <canvas id="websiteChartPie" style="max-width: 300px;"></canvas>
+                        </div>
+                        
+                        <!-- Website List -->
+                        <div id="websiteList" class="space-y-4">
+                            <div class="text-center text-text-secondary py-8">
+                                <p class="text-sm">No data available yet. Start tracking!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Peak Usage Heatmap -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-text-primary">Peak Usage Times (Today)</h2>
+                        <div class="flex items-center space-x-2 text-xs text-text-secondary">
+                            <span>Less</span>
+                            <div class="flex space-x-1">
+                                <div class="w-3 h-3 bg-gray-200 rounded-sm"></div>
+                                <div class="w-3 h-3 bg-primary-200 rounded-sm"></div>
+                                <div class="w-3 h-3 bg-primary-400 rounded-sm"></div>
+                                <div class="w-3 h-3 bg-primary-600 rounded-sm"></div>
+                                <div class="w-3 h-3 bg-primary-800 rounded-sm"></div>
+                            </div>
+                            <span>More</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Heatmap Grid -->
+                    <div id="heatmapContainer" class="space-y-2">
+                        <div class="text-center text-text-secondary py-4">
+                            <p class="text-sm">Loading heatmap...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Insights & Details -->
+            <div class="space-y-8">
+                <!-- AI Chatbot - DeepSeek -->
+                <div class="card bg-white border border-gray-200 flex flex-col overflow-hidden" id="ai-chatbot-container" style="height: 700px; max-height: 90vh;">
+                    <!-- Header -->
+                    <div class="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-200 flex-shrink-0">
+                        <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-text-primary text-lg">AI Assistant</h3>
+                            <p class="text-xs text-text-secondary">DeepSeek R1</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Messages Container -->
+                    <div id="chatbot-messages" class="flex-1 overflow-y-auto bg-gradient-to-b from-gray-50 to-white rounded-lg p-4 mb-3" style="display: flex; flex-direction: column; gap: 12px; min-height: 0; scrollbar-width: thin; scrollbar-color: #d1d5db #f3f4f6;">
+                        <div class="text-center text-text-secondary text-sm py-4">
+                            <p class="mb-2 text-base">👋 Hello! I'm DeepSeek AI Assistant</p>
+                            <p class="text-xs">Ask me anything about your digital habits and productivity!</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Input Section -->
+                    <div class="space-y-3 border-t border-gray-200 pt-4 flex-shrink-0">
+                        <!-- Input Field with Send Button -->
+                        <div class="flex gap-2 items-end">
+                            <div class="flex-1 relative">
+                                <input type="text" id="chatbot-input" placeholder="Ask me about your analytics..." 
+                                       class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-0 focus:border-accent transition-all duration-200 bg-white hover:border-gray-300 placeholder-gray-400"
+                                       autocomplete="off">
+                            </div>
+                            <button id="chatbot-send" class="px-6 py-3 bg-accent hover:bg-accent-700 text-white rounded-xl transition-all duration-200 text-sm font-semibold flex items-center justify-center min-w-14 shadow-md hover:shadow-lg active:scale-95">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Clear Button -->
+                        <button id="chatbot-clear" class="w-full px-4 py-2.5 text-sm font-medium text-text-secondary hover:text-accent hover:bg-accent-50 border border-gray-200 rounded-lg transition-all duration-200">
+                            🗑️ Clear Chat
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Peer Comparison -->
+                <div class="card">
+                    <h3 class="font-semibold text-text-primary mb-4">Peer Comparison</h3>
+                    
+                    <div class="space-y-4">                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-text-secondary">Screen Time vs Peers</span>
+                                <span class="text-secondary font-medium">23% below average</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-secondary h-2 rounded-full" style="width: 77%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-text-secondary">Productivity Score</span>
+                                <span class="text-primary font-medium">15% above average</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 87%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-text-secondary">Focus Sessions</span>
+                                <span class="text-accent font-medium">8% above average</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-accent h-2 rounded-full" style="width: 82%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-secondary-50 rounded-lg border border-secondary-200">
+                        <p class="text-xs text-text-secondary">
+                            <span class="font-medium text-secondary">Great progress!</span> You're in the top 25% of users in your profession category.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Top Applications -->
+                <div class="card">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-text-primary">Top Applications</h3>
+                        <button class="text-primary hover:text-primary-700 text-sm font-medium">View All</button>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://img.rocket.new/generatedImages/rocket_gen_img_168518482-1762230447299.png" 
+                                     alt="VS Code application icon" class="w-8 h-8 rounded-lg object-cover"
+                                     onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                <div>
+                                    <p class="text-sm font-medium text-text-primary">VS Code</p>
+                                    <p class="text-xs text-text-secondary">Development</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-text-primary">2h 15m</p>
+                                <p class="text-xs text-text-secondary">34%</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://img.rocket.new/generatedImages/rocket_gen_img_142561301-1762230446999.png" 
+                                     alt="Slack communication app icon" class="w-8 h-8 rounded-lg object-cover"
+                                     onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                <div>
+                                    <p class="text-sm font-medium text-text-primary">Slack</p>
+                                    <p class="text-xs text-text-secondary">Communication</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-text-primary">1h 32m</p>
+                                <p class="text-xs text-text-secondary">23%</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://img.rocket.new/generatedImages/rocket_gen_img_103b190a2-1762230446019.png" 
+                                     alt="Chrome browser icon" class="w-8 h-8 rounded-lg object-cover"
+                                     onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                <div>
+                                    <p class="text-sm font-medium text-text-primary">Chrome</p>
+                                    <p class="text-xs text-text-secondary">Browser</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-text-primary">1h 8m</p>
+                                <p class="text-xs text-text-secondary">17%</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://img.rocket.new/generatedImages/rocket_gen_img_15032d21d-1762230445171.png" 
+                                     alt="Spotify music app icon" class="w-8 h-8 rounded-lg object-cover"
+                                     onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                <div>
+                                    <p class="text-sm font-medium text-text-primary">Spotify</p>
+                                    <p class="text-xs text-text-secondary">Music</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-semibold text-text-primary">47m</p>
+                                <p class="text-xs text-text-secondary">12%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Options -->
+                <div class="card">
+                    <h3 class="font-semibold text-text-primary mb-4">Export Data</h3>
+                    
+                    <div class="space-y-3">
+                        <button class="w-full px-4 py-3 border border-gray-200 rounded-lg text-text-primary hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path>
+                            </svg>
+                            <span>Download PDF Report</span>
+                        </button>
+                        
+                        <button class="w-full px-4 py-3 border border-gray-200 rounded-lg text-text-primary hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>Export CSV Data</span>
+                        </button>
+                        
+                        <button class="w-full px-4 py-3 border border-gray-200 rounded-lg text-text-primary hover:bg-gray-50 transition-colors text-sm font-medium flex items-center justify-center space-x-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                            </svg>
+                            <span>Share Analytics</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-gray-200 px-4 py-2">
+        <div class="flex justify-around">
+            <a href="dashboard.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                <span class="text-xs mt-1">Dashboard</span>
+            </a>
+            <a href="analytics.html" class="flex flex-col items-center py-2 text-primary">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                </svg>
+                <span class="text-xs mt-1">Analytics</span>
+            </a>
+            <a href="focus_sessions.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                <span class="text-xs mt-1">Focus</span>
+            </a>
+            <a href="schedule.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="text-xs mt-1">Schedule</span>
+            </a>
+            <a href="settings.html" class="flex flex-col items-center py-2 text-text-secondary">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span class="text-xs mt-1">Settings</span>
+            </a>
+        </div>
+    </nav>
+
+<script type="module">
+    import { db } from '../js/firebase-config.js';
+    import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+    let trendChart = null;
+    let websiteChart = null;
+    let currentChartView = 'screenTime';
+    let lastAnalyticsData = null;
+    const userId = window.DETOX_USER_ID || localStorage.getItem('detox_user_id');
+    
+    console.log('[analytics] Using userId:', userId);
+
+    // Helper functions
+    function formatMinutes(value) {
+        // Firebase stores websiteTimeBreakdown in MINUTES already
+        // So just format directly
+        const mins = Math.round(value);
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        return h > 0 ? `${h}h ${m}m` : `${m}m`;
+    }
+
+    // Calculate productivity score
+    const PRODUCTIVE_SITES = ['github.com', 'stackoverflow.com', 'dev.to', 'localhost', 'google.com'];
+    const NON_PRODUCTIVE_SITES = ['youtube.com', 'twitter.com', 'facebook.com', 'instagram.com', 'tiktok.com'];
+
+    // Website category definitions
+    const CATEGORIES = {
+        'Social Media': ['twitter.com', 'facebook.com', 'instagram.com', 'tiktok.com', 'reddit.com', 'pinterest.com', 'snapchat.com', 'linkedin.com'],
+        'Video Streaming': ['youtube.com', 'netflix.com', 'twitch.tv', 'vimeo.com'],
+        'Education': ['udemy.com', 'coursera.org', 'edx.org', 'khan.org', 'codecademy.com'],
+        'Development': ['github.com', 'stackoverflow.com', 'dev.to', 'medium.com'],
+        'Work': ['google.com', 'gmail.com', 'outlook.com', 'slack.com', 'zoom.us'],
+        'Entertainment': ['reddit.com', 'imgur.com', 'giphy.com'],
+        'Shopping': ['amazon.com', 'ebay.com', 'etsy.com'],
+        'Other': []
+    };
+
+    const CATEGORY_COLORS = {
+        'Social Media': '#EC4899',
+        'Video Streaming': '#F97316',
+        'Education': '#3B82F6',
+        'Development': '#10B981',
+        'Work': '#8B5CF6',
+        'Entertainment': '#F59E0B',
+        'Shopping': '#EF4444',
+        'Other': '#6B7280'
+    };
+
+    function getCategoryForSite(site) {
+        for (const [category, sites] of Object.entries(CATEGORIES)) {
+            if (sites.some(s => site.toLowerCase().includes(s))) {
+                return category;
+            }
+        }
+        return 'Other';
+    }
+
+    function categorizeWebsites(websiteBreakdown) {
+        const categoryData = {};
+        
+        // Firebase stores websiteTimeBreakdown in MINUTES
+        Object.entries(websiteBreakdown).forEach(([site, timeInMinutes]) => {
+            const category = getCategoryForSite(site);
+            categoryData[category] = (categoryData[category] || 0) + timeInMinutes;
+        });
+        
+        return categoryData;
+    }
+
+    function calculateProductivityScore(websiteBreakdown) {
+        if (!websiteBreakdown || Object.keys(websiteBreakdown).length === 0) return 0;
+        
+        let productiveTime = 0;
+        let totalTime = 0;
+        
+        Object.entries(websiteBreakdown).forEach(([site, value]) => {
+            // Handle both milliseconds (from extension) and minutes (from Firebase)
+            const ms = typeof value === 'number' ? value : 0;
+            totalTime += ms;
+            const isProductive = PRODUCTIVE_SITES.some(ps => site.toLowerCase().includes(ps.toLowerCase()));
+            if (isProductive) {
+                productiveTime += ms;
+            }
+        });
+        
+        return totalTime > 0 ? Math.round((productiveTime / totalTime) * 100) : 0;
+    }
+
+    // Update analytics metrics
+    function updateAnalyticsUI(data) {
+        if (!data) return;
+
+        lastAnalyticsData = data;
+        console.log('[analytics] Updating UI with data:', data);
+
+        // Total screen time - Firebase stores this in minutes
+        const screenTimeEl = document.getElementById('analyticsTotalTime');
+        if (screenTimeEl) {
+            const mins = data.totalScreenTime || 0;
+            const h = Math.floor(mins / 60);
+            const m = mins % 60;
+            screenTimeEl.textContent = h > 0 ? `${h}h ${m}m` : `${m}m`;
+        }
+
+        // Number of websites
+        const websitesEl = document.getElementById('numberOfWebsites');
+        if (websitesEl) {
+            websitesEl.textContent = data.numberOfWebsites || 0;
+        }
+
+        // Productivity score
+        const productivityEl = document.getElementById('analyticsProductivity');
+        if (productivityEl) {
+            const score = calculateProductivityScore(data.websiteTimeBreakdown);
+            productivityEl.textContent = score + '%';
+        }
+
+        // Top website
+        if (data.websiteTimeBreakdown && Object.keys(data.websiteTimeBreakdown).length > 0) {
+            const topSite = Object.entries(data.websiteTimeBreakdown)
+                .sort((a, b) => b[1] - a[1])[0];
+            
+            const topWebEl = document.getElementById('topWebsite');
+            if (topWebEl) {
+                topWebEl.textContent = topSite[0];
+            }
+            
+            const topWebTimeEl = document.getElementById('topWebsiteTime');
+            if (topWebTimeEl) {
+                topWebTimeEl.textContent = formatMinutes(topSite[1]);
+            }
+        }
+
+        // Update charts
+        updateWebsiteChart(data.websiteTimeBreakdown);
+        updateWebsiteList(data.websiteTimeBreakdown);
+        updateTrendChartByView(data, currentChartView);
+        updateHeatmap(data.websiteTimeBreakdown);
+    }
+
+    // Update website list
+    function updateWebsiteList(websiteBreakdown) {
+        const container = document.getElementById('websiteList');
+        if (!container) return;
+
+        if (!websiteBreakdown || Object.keys(websiteBreakdown).length === 0) {
+            container.innerHTML = '<div class="text-center text-text-secondary py-8"><p class="text-sm">No data available yet</p></div>';
+            return;
+        }
+
+        // Firebase stores websiteTimeBreakdown in MINUTES
+        const totalTime = Object.values(websiteBreakdown).reduce((a, b) => a + b, 0);
+        const entries = Object.entries(websiteBreakdown)
+            .sort((a, b) => b[1] - a[1])
+            .filter(([site, mins]) => mins > 0);
+
+        if (entries.length === 0) {
+            container.innerHTML = '<div class="text-center text-text-secondary py-8"><p class="text-sm">No usage data yet</p></div>';
+            return;
+        }
+
+        // Get colors from pie chart (same as chart uses)
+        const chartColors = generateDistinctColors(entries.length);
+
+        const html = entries
+            .map(([site, mins], index) => {
+                const percentage = totalTime > 0 ? Math.round((mins / totalTime) * 100) : 0;
+                const color = chartColors[index] || '#6B7280';
+                return `
+                    <div class="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center space-x-3 flex-1 min-w-0">
+                            <div class="w-4 h-4 rounded-full flex-shrink-0" style="background-color: ${color};"></div>
+                            <div class="min-w-0">
+                                <span class="text-sm font-medium text-text-primary block truncate">${site}</span>
+                            </div>
+                        </div>
+                        <div class="text-right ml-2 flex-shrink-0">
+                            <p class="text-sm font-semibold text-text-primary">${formatMinutes(mins)}</p>
+                            <p class="text-xs text-text-secondary">${percentage}%</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        
+        container.innerHTML = html;
+    }
+
+    // Update website chart
+    function updateWebsiteChart(websiteBreakdown) {
+        const ctx = document.getElementById('websiteChartPie');
+        if (!ctx || !websiteBreakdown || Object.keys(websiteBreakdown).length === 0) {
+            console.log('[chart] No data for pie chart');
+            return;
+        }
+
+        console.log('[chart] Creating pie chart with data:', websiteBreakdown);
+
+        // Sort websites by time (highest first)
+        const sortedWebsites = Object.entries(websiteBreakdown)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 12); // Top 12 websites
+
+        const labels = sortedWebsites.map(([site]) => {
+            // Clean up the domain name for display
+            return site.replace('www.', '').split('/')[0];
+        });
+        const data = sortedWebsites.map(([, time]) => time); // Already in minutes
+
+        // Generate distinct colors for each website
+        const colors = generateDistinctColors(labels.length);
+
+        console.log('[chart] Labels:', labels, 'Data (mins):', data, 'Colors:', colors);
+
+        if (websiteChart) {
+            websiteChart.destroy();
+        }
+
+        websiteChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: colors,
+                    borderColor: '#fff',
+                    borderWidth: 2,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed;
+                                const hours = Math.floor(value / 60);
+                                const mins = value % 60;
+                                const timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+                                const percentage = ((value / data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                                return `${label}: ${timeStr} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        console.log('[chart] Chart created successfully');
+    }
+
+    // Generate distinct colors using HSL color space for better distribution
+    function generateDistinctColors(count) {
+        const colors = [];
+        const hueStep = 360 / count;
+        const saturation = 70;
+        const lightness = 50;
+        
+        for (let i = 0; i < count; i++) {
+            const hue = (i * hueStep) % 360;
+            colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+        }
+        
+        return colors;
+    }
+
+    function updateHeatmap(websiteBreakdown) {
+        console.log('[heatmap] Updating heatmap with data:', websiteBreakdown);
+        
+        if (!websiteBreakdown || Object.keys(websiteBreakdown).length === 0) {
+            console.log('[heatmap] No data, showing empty heatmap');
+            const emptyHours = Array(24).fill(0);
+            renderHeatmapRow('Today', emptyHours, 0);
+            return;
+        }
+
+        // Get total minutes for distribution
+        const totalMinutes = Object.values(websiteBreakdown).reduce((a, b) => a + b, 0);
+        console.log('[heatmap] Total minutes:', totalMinutes);
+        
+        // Simulate hourly distribution based on total website time
+        const hours = Array(24).fill(0);
+        
+        if (totalMinutes > 0) {
+            // Distribute activity with peak during business hours
+            const businessHours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+            const distribution = Array(24).fill(1);
+            
+            businessHours.forEach(h => {
+                distribution[h] = 3; // Peak hours get 3x weight
+            });
+            
+            const totalWeight = distribution.reduce((a, b) => a + b, 0);
+            distribution.forEach((weight, hour) => {
+                hours[hour] = Math.round((totalMinutes * weight) / totalWeight);
+            });
+        }
+
+        renderHeatmapRow('Today', hours, Math.max(...hours));
+    }
+
+    function renderHeatmapRow(label, hours, maxValue) {
+        console.log('[heatmap] Rendering row:', label, hours);
+        
+        const colors = ['#F3F4F6', '#BFDBFE', '#93C5FD', '#3B82F6', '#1E40AF'];
+        
+        const getColor = (value, max) => {
+            if (value === 0 || max === 0) return colors[0];
+            const ratio = value / max;
+            if (ratio < 0.25) return colors[1];
+            if (ratio < 0.5) return colors[2];
+            if (ratio < 0.75) return colors[3];
+            return colors[4];
+        };
+
+        const hourLabels = Array.from({length: 24}, (_, i) => {
+            const period = i < 12 ? 'AM' : 'PM';
+            const displayHour = i === 0 ? 12 : (i > 12 ? i - 12 : i);
+            return `${displayHour} ${period}`;
+        });
+
+        let html = `
+            <div class="flex items-center space-x-2">
+                <span class="text-xs text-text-secondary w-12 font-medium">${label}</span>
+                <div class="flex space-x-1">
+                    ${hours.map((h, idx) => `
+                        <div class="w-4 h-4 rounded-sm cursor-pointer hover:opacity-80 transition-opacity" 
+                             style="background-color: ${getColor(h, maxValue)};" 
+                             title="${hourLabels[idx]}: ${h}m"></div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        const container = document.getElementById('heatmapContainer');
+        if (container) {
+            container.innerHTML = html;
+            console.log('[heatmap] Rendered successfully');
+        } else {
+            console.warn('[heatmap] Container not found');
+        }
+    }
+
+    // Chart view update function
+    window.updateChartView = function(view) {
+        console.log('Switching to:', view);
+        currentChartView = view;
+
+        // Update button styles
+        document.querySelectorAll('.flex.items-center.space-x-2 button').forEach(btn => {
+            btn.classList.remove('bg-primary-50', 'text-primary');
+            btn.classList.add('text-text-secondary', 'hover:text-primary', 'hover:bg-gray-50');
+        });
+        event.target.classList.remove('text-text-secondary', 'hover:text-primary', 'hover:bg-gray-50');
+        event.target.classList.add('bg-primary-50', 'text-primary');
+
+        // Update chart based on view
+        if (lastAnalyticsData) {
+            updateTrendChartByView(lastAnalyticsData, view);
+        }
+    };
+
+    function updateTrendChartByView(data, view) {
+        const ctx = document.getElementById('usageTrendChart');
+        if (!ctx) return;
+
+        if (trendChart) {
+            trendChart.destroy();
+        }
+
+        let chartData, chartLabel, chartColor;
+
+        if (view === 'screenTime') {
+            chartData = [data.totalScreenTime || 0];
+            chartLabel = 'Screen Time (minutes)';
+            chartColor = '#3B82F6';
+        } else if (view === 'websites') {
+            chartData = [data.numberOfWebsites || 0];
+            chartLabel = 'Number of Websites';
+            chartColor = '#10B981';
+        } else if (view === 'productivity') {
+            const score = calculateProductivityScore(data.websiteTimeBreakdown);
+            chartData = [score];
+            chartLabel = 'Productivity Score (%)';
+            chartColor = '#8B5CF6';
+        }
+
+        trendChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Today'],
+                datasets: [{
+                    label: chartLabel,
+                    data: chartData,
+                    backgroundColor: chartColor,
+                    borderColor: chartColor,
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#6B7280', font: { size: 12 } }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                if (view === 'screenTime') {
+                                    const hours = Math.floor(value / 60);
+                                    const mins = value % 60;
+                                    const timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+                                    return `Screen Time: ${timeStr}`;
+                                } else if (view === 'websites') {
+                                    return `Websites: ${value}`;
+                                } else if (view === 'productivity') {
+                                    return `Productivity: ${value}%`;
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: '#6B7280' },
+                        grid: { color: '#E5E7EB' }
+                    },
+                    x: {
+                        ticks: { color: '#6B7280' },
+                        grid: { color: '#E5E7EB' }
+                    }
+                }
+            }
+        });
+    }
+
+    // Set up real-time listener
+    const today = new Date().toISOString().slice(0, 10);
+    // New structure: users/{userId}/daily/{date}
+    const ref = doc(db, 'users', userId, 'daily', today);
+
+    console.log('[analytics] Setting up listener for:', {userId, date: today});
+
+    const unsub = onSnapshot(ref, snap => {
+        if (snap.exists()) {
+            console.log('[analytics] Data received from Firebase:', snap.data());
+            updateAnalyticsUI(snap.data());
+            console.log('Analytics updated:', snap.data());
+        } else {
+            console.log('[analytics] No data yet for:', today);
+            // Show default heatmap even without data
+            document.getElementById('heatmapContainer').innerHTML = '<div class="flex items-center space-x-2"><span class="text-xs text-text-secondary w-12 font-medium">Today</span><div class="flex space-x-1">' + Array(24).fill('<div class="w-4 h-4 rounded-sm bg-gray-200"></div>').join('') + '</div></div>';
+        }
+    }, err => {
+        console.warn('[analytics] Listener error:', err);
+        // Show default heatmap on error
+        document.getElementById('heatmapContainer').innerHTML = '<div class="flex items-center space-x-2"><span class="text-xs text-text-secondary w-12 font-medium">Today</span><div class="flex space-x-1">' + Array(24).fill('<div class="w-4 h-4 rounded-sm bg-gray-200"></div>').join('') + '</div></div>';
+    });
+
+    // Listen for usage updates from tracker
+    window.addEventListener('usageUpdated', (e) => {
+        console.log('[analytics] Usage updated event:', e.detail);
+        updateAnalyticsUI(e.detail);
+    });
+</script>
+
+<script>
+/**
+ * AI Chatbot - DeepSeek V3.1 Integration
+ * Provides real-time AI insights about productivity and screen time
+ */
+
+// API Configuration - Using OpenRouter (Free Tier)
+const DEEPSEEK_API_KEY = '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';
+const DEEPSEEK_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+class AIChatbot {
+  constructor() {
+    this.messages = [];
+    this.isLoading = false;
+    this.container = null;
+    this.apiCallCount = 0;
+    this.systemPrompt = `You are DeepSync AI, a productivity insights assistant. Help users understand their screen time patterns and provide personalized productivity recommendations based on their daily usage data. Be concise, friendly, and actionable in your responses. Keep responses to 2-3 sentences max for chat messages.`;
+    this.initializeChatbot();
+  }
+
+  initializeChatbot() {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => this.setupChatbot());
+    } else {
+      this.setupChatbot();
+    }
+  }
+
+  setupChatbot() {
+    try {
+      this.container = document.getElementById('ai-chatbot-container');
+      if (!this.container) {
+        console.warn('⚠️ AI Chatbot container not found');
+        return;
+      }
+
+      this.messagesContainer = this.container.querySelector('#chatbot-messages');
+      this.inputField = this.container.querySelector('#chatbot-input');
+      this.sendButton = this.container.querySelector('#chatbot-send');
+      this.clearButton = this.container.querySelector('#chatbot-clear');
+
+      if (!this.messagesContainer || !this.inputField || !this.sendButton || !this.clearButton) {
+        console.error('❌ Missing required chatbot elements');
+        return;
+      }
+
+      this.sendButton.addEventListener('click', () => {
+        try {
+          this.sendMessage();
+        } catch (error) {
+          console.error('Error in send button click:', error);
+        }
+      });
+
+      this.inputField.addEventListener('keypress', (e) => {
+        try {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            this.sendMessage();
+          }
+        } catch (error) {
+          console.error('Error in keypress handler:', error);
+        }
+      });
+
+      this.clearButton.addEventListener('click', () => {
+        try {
+          this.clearChat();
+        } catch (error) {
+          console.error('Error in clear button click:', error);
+        }
+      });
+
+      this.addMessage('assistant', 'Hello! 👋 I\'m DeepSync AI. Ask me about your productivity patterns, screen time insights, or tips to improve your focus. What would you like to know?');
+      console.log('✅ AI Chatbot initialized successfully');
+    } catch (error) {
+      console.error('❌ Error setting up chatbot:', error);
+    }
+  }
+
+  async sendMessage() {
+    const userMessage = this.inputField.value.trim();
+    if (!userMessage) return;
+
+    this.addMessage('user', userMessage);
+    this.inputField.value = '';
+    this.inputField.focus();
+
+    this.setLoading(true);
+
+    try {
+      console.log('💬 Processing message:', userMessage);
+
+      const response = await this.callDeepSeekAPI(userMessage);
+      
+      if (!response) {
+        throw new Error('Empty response from AI');
+      }
+      
+      this.addMessage('assistant', response);
+      console.log('✅ Message processed successfully');
+      
+    } catch (error) {
+      console.error('❌ Error in sendMessage:', error);
+      const errorMsg = error.message || 'An unexpected error occurred';
+      this.addMessage('assistant', `${errorMsg}\n\nℹ️ Tip: You can still ask me about your current productivity metrics!`);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  async callDeepSeekAPI(userMessage) {
+    try {
+      this.apiCallCount++;
+      
+      const messages = [
+        {
+          role: 'system',
+          content: this.systemPrompt
+        },
+        ...this.messages
+          .filter(msg => msg.sender)
+          .map(msg => ({
+            role: msg.sender === 'user' ? 'user' : 'assistant',
+            content: typeof msg.text === 'string' ? msg.text : String(msg.text)
+          })),
+        {
+          role: 'user',
+          content: userMessage
+        }
+      ];
+
+      console.log('📤 Sending to backend /api/chat...');
+      console.log('Request #' + this.apiCallCount);
+
+      // Use backend proxy to avoid CORS issues
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ messages })
+      });
+
+      console.log('📥 Response status:', response.status);
+
+      if (!response.ok) {
+        let errorMessage = `API error: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error?.message || errorData.message || errorMessage;
+          console.error('❌ API Error Response:', errorData);
+          
+          if (response.status === 401) {
+            throw new Error('❌ Authentication failed (401). API key invalid or expired.');
+          } else if (response.status === 429) {
+            throw new Error('⏱️ Rate limit exceeded (429). Please wait a moment before trying again.');
+          } else if (response.status === 403) {
+            throw new Error('🔒 Access forbidden (403). Your API key may not have the required permissions.');
+          }
+        } catch (parseError) {
+          console.error('Could not parse error response:', parseError);
+        }
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      console.log('✅ API Response received:', data);
+
+      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+        throw new Error('❌ Invalid API response format');
+      }
+
+      const aiResponse = data.choices[0].message.content;
+
+      if (!aiResponse) {
+        throw new Error('❌ Empty response from AI');
+      }
+
+      console.log('🤖 AI Response:', aiResponse);
+      return aiResponse;
+
+    } catch (error) {
+      console.error('❌ DeepSeek API Error:', error.message);
+      throw error;
+    }
+  }
+
+  addMessage(sender, text) {
+    try {
+      if (!sender || !text) {
+        console.warn('⚠️ Invalid message: sender or text missing');
+        return;
+      }
+
+      const messageText = typeof text === 'string' ? text : String(text);
+      this.messages.push({ sender, text: messageText });
+
+      if (!this.messagesContainer) {
+        console.warn('⚠️ Messages container not available');
+        return;
+      }
+
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+      messageDiv.style.animation = 'fadeIn 0.3s ease-in';
+
+      const messageBubble = document.createElement('div');
+      messageBubble.className = `max-w-xs lg:max-w-sm px-4 py-2.5 rounded-lg text-sm leading-relaxed ${
+        sender === 'user'
+          ? 'bg-accent text-white rounded-br-none shadow-sm'
+          : 'bg-gray-100 text-text-primary rounded-bl-none border border-gray-200 shadow-sm'
+      }`;
+
+      try {
+        messageBubble.innerHTML = this.parseMessageContent(messageText);
+      } catch (parseError) {
+        console.error('Error parsing message:', parseError);
+        messageBubble.textContent = messageText;
+      }
+
+      messageDiv.appendChild(messageBubble);
+      this.messagesContainer.appendChild(messageDiv);
+
+      // Auto-scroll to bottom
+      setTimeout(() => {
+        if (this.messagesContainer) {
+          this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        }
+      }, 100);
+
+      console.log(`📝 Message added (${sender}):`, messageText.substring(0, 50) + '...');
+    } catch (error) {
+      console.error('❌ Error adding message:', error);
+    }
+  }
+
+  parseMessageContent(text) {
+    try {
+      if (typeof text !== 'string') {
+        text = String(text);
+      }
+
+      let content = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+
+      content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      content = content.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      content = content.replace(/\n/g, '<br>');
+
+      return content;
+    } catch (error) {
+      console.error('Error parsing message content:', error);
+      return (typeof text === 'string' ? text : String(text))
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\n/g, '<br>');
+    }
+  }
+
+  setLoading(loading) {
+    try {
+      this.isLoading = loading;
+      
+      if (!this.sendButton || !this.inputField || !this.messagesContainer) {
+        console.warn('⚠️ UI elements not available for setLoading');
+        return;
+      }
+
+      this.sendButton.disabled = loading;
+      this.inputField.disabled = loading;
+
+      if (loading) {
+        this.sendButton.innerHTML = '⏳';
+        this.sendButton.title = 'Waiting for AI response...';
+        
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'flex justify-start typing-indicator';
+        typingDiv.innerHTML = `
+          <div class="bg-gray-100 text-text-primary px-4 py-2.5 rounded-lg rounded-bl-none border border-gray-200">
+            <div class="flex space-x-2">
+              <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s;"></div>
+              <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+              <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+            </div>
+          </div>
+        `;
+        this.messagesContainer.appendChild(typingDiv);
+        setTimeout(() => {
+          this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        }, 50);
+      } else {
+        this.sendButton.innerHTML = '↓';
+        this.sendButton.title = 'Send message';
+        
+        const typingIndicators = this.messagesContainer.querySelectorAll('.typing-indicator');
+        typingIndicators.forEach(indicator => indicator.remove());
+      }
+    } catch (error) {
+      console.error('❌ Error in setLoading:', error);
+    }
+  }
+
+  clearChat() {
+    this.messages = [];
+    this.messagesContainer.innerHTML = '';
+    this.addMessage('assistant', 'Chat cleared! 🧹 How can I help you with your productivity today?');
+  }
+
+  getSuggestedQuestions() {
+    return [
+      'What are my peak productivity hours?',
+      'How can I reduce distractions?',
+      'What\'s my productivity score today?',
+      'Any tips to improve focus?',
+      'How am I doing compared to my goals?'
+    ];
+  }
+}
+
+// Initialize chatbot when module loads
+const aiChatbot = new AIChatbot();
+window.detoxAIChatbot = aiChatbot;
+console.log('✅ AI Chatbot script loaded');
+</script>
+
+<script type="module" src="../js/firebase-config.js"></script>
+<script type="module" src="../js/tracker.js"></script>
+<script type="module" src="../js/listeners.js"></script>
+<script type="module" src="../js/app-init.js"></script>
+
+<script>
+// Listen for tracker updates and update UI in real-time
+window.addEventListener('usageUpdated', (event) => {
+  const data = event.detail;
+  console.log('[analytics] Received usageUpdated event:', data);
+  
+  // Update total screen time
+  if (data.totalScreenTime !== undefined) {
+    const mins = data.totalScreenTime;
+    const hours = Math.floor(mins / 60);
+    const m = mins % 60;
+    const timeStr = hours > 0 ? `${hours}h ${m}m` : `${m}m`;
+    
+    const elements = [
+      document.getElementById('totalScreenTime'),
+      document.getElementById('screen-time'),
+      document.getElementById('screenTime')
+    ];
+    elements.forEach(el => {
+      if (el) el.textContent = timeStr;
+    });
+  }
+  
+  // Update number of websites visited
+  if (data.numberOfWebsites !== undefined) {
+    const websitesEl = document.getElementById('websites');
+    if (websitesEl) {
+      websitesEl.textContent = `${data.numberOfWebsites}`;
+    }
+  }
+  
+  // Update website list
+  if (data.websiteTimeBreakdown) {
+    const websiteList = document.getElementById('websiteList');
+    if (websiteList) {
+      const breakdown = Object.entries(data.websiteTimeBreakdown)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10);
+      
+      if (breakdown.length > 0) {
+        websiteList.innerHTML = breakdown
+          .map(([site, mins]) => {
+            const hours = Math.floor(mins / 60);
+            const m = mins % 60;
+            const timeStr = hours > 0 ? `${hours}h ${m}m` : `${m}m`;
+            return `<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <span class="font-medium text-text-primary">${site}</span>
+              <span class="text-secondary font-semibold">${timeStr}</span>
+            </div>`;
+          })
+          .join('');
+      }
+    }
+  }
+  
+  // Update website chart if available
+  if (data.websiteTimeBreakdown && window.websiteChart) {
+    const labels = Object.keys(data.websiteTimeBreakdown);
+    const values = Object.values(data.websiteTimeBreakdown);
+    window.websiteChart.data.labels = labels;
+    window.websiteChart.data.datasets[0].data = values;
+    window.websiteChart.update();
+  }
+});
+
+// Update on page load if tracker already has data
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('[analytics] DOM loaded, checking for existing tracker data');
+  if (window.DetoxTracker && window.DetoxTracker.getCurrentData) {
+    const data = window.DetoxTracker.getCurrentData();
+    if (data.totalScreenTime > 0 || Object.keys(data.websiteTimeBreakdown || {}).length > 0) {
+      console.log('[analytics] Found existing tracker data, dispatching event');
+      window.dispatchEvent(new CustomEvent('usageUpdated', { detail: data }));
+    }
+  }
+});
+</script>
